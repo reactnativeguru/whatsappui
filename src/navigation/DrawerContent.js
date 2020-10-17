@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {useWindowDimensions, View, Text, StyleSheet} from 'react-native';
+import {
+  useWindowDimensions,
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -7,6 +14,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import firestore from '@react-native-firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
 
 const FooterLinks = () => {
   return (
@@ -22,21 +30,37 @@ const FooterLinks = () => {
 const CustomDrawerContent = (props) => {
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   const getChannels = () => {
-    firestore()
+    const unsubscribe = firestore()
       .collection('rooms')
       .onSnapshot((snapshot) =>
         setChannels(
           snapshot.docs.map((doc) => ({
             id: doc.id,
+            name: doc.data().name,
           })),
         ),
       );
   };
 
   useEffect(() => {
-    getChannels();
+    //   getChannels();
+    const unsubscribe = firestore()
+      .collection('rooms')
+      .onSnapshot((snapshot) =>
+        setChannels(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            name: doc.data().name,
+          })),
+        ),
+      );
+    /**
+     * unsubscribe listener
+     */
+    return () => unsubscribe();
   }, []);
 
   console.warn(channels);
@@ -46,9 +70,28 @@ const CustomDrawerContent = (props) => {
 
       <View style={styles.container}>
         <View style={styles.profileContainer}>{/* <ProfileImage /> */}</View>
+
         <View style={styles.routes}>
           <DrawerItemList {...props} />
+          <View style={styles.channels}>
+            <Text style={styles.channelTitle}>Channels</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AddChannel')}>
+              <Text style={styles.channelTitle}>Add Channel</Text>
+            </TouchableOpacity>
+            {channels.map((channel) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('ChannelChat', {
+                    channel: channel.id,
+                    name: channel.name,
+                  })
+                }>
+                <Text key={channel.id}># {channel.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
+
         <View style={styles.extraLinks}>
           <FooterLinks />
         </View>
@@ -64,7 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: 'center',
     justifyContent: 'space-between',
-    flexDirection: 'column',
+    //  flexDirection: 'column',
   },
 
   profileContainer: {flex: 1},
@@ -81,5 +124,11 @@ const styles = StyleSheet.create({
   },
   footerLinks: {
     padding: 10,
+  },
+  channels: {
+    padding: 15,
+  },
+  channelTitle: {
+    fontSize: 16,
   },
 });

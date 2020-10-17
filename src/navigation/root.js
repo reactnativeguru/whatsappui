@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import colors from '../theme/colors';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -18,6 +18,11 @@ import HomeStack from './HomeStack';
 import MainTabs from './mainTabs';
 import ChatRoomScreen from '../screens/ChatRoomScreen';
 import CustomDrawerContent from './DrawerContent';
+import ChannelScreen from '../screens/ChannelScreen';
+import AddChannel from '../screens/ChannelScreen/add';
+import ChannelChatScreen from '../screens/ChannelScreen/chat';
+import LoginScreen from '../screens/AuthScreens/Login';
+import SignUpScreen from '../screens/AuthScreens/SignUp';
 
 const Drawer = createDrawerNavigator();
 
@@ -97,8 +102,35 @@ const RootDrawer = () => (
       width: 300,
     }}>
     <Drawer.Screen name="Home" component={RootStack} />
+    {/* <Drawer.Screen name="Channel" component={ChannelScreen} /> */}
   </Drawer.Navigator>
 );
+
+const RootNavigationContainer = () => {
+  const [user, setUser] = useState('Jayant');
+
+  if (!user) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+      </Stack.Navigator>
+    );
+  }
+
+  return (
+    <Stack.Navigator
+      mode="modal"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="RootNavigationContainer" component={RootDrawer} />
+      <Stack.Screen name="Channel" component={ChannelScreen} />
+      <Stack.Screen name="AddChannel" component={AddChannel} />
+      <Stack.Screen name="ChannelChat" component={ChannelChatScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const styles = StyleSheet.create({
   displayIconRow: {
@@ -108,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RootDrawer;
+export default RootNavigationContainer;
