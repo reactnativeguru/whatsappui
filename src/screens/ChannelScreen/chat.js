@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import Message from '../../components/Message';
+import ChatInput from '../../components/ChatInput';
 
 const ChannelChatScreen = ({navigation}) => {
   const route = useRoute();
@@ -32,7 +33,7 @@ const ChannelChatScreen = ({navigation}) => {
   }, [roomId]);
 
   // console.warn('roomDetails::', roomDetails);
-  console.warn('roomMessages::', roomMessages);
+  // console.warn('roomMessages::', roomMessages);
 
   return (
     <View style={styles.container}>
@@ -49,6 +50,7 @@ const ChannelChatScreen = ({navigation}) => {
           userImage={message.userImage}
         />
       ))}
+      <ChatInput channelName={roomDetails?.name} />
     </View>
   );
 };
