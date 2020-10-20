@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
-import {GiftedChat, Bubble} from 'react-native-gifted-chat';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const RoomScreen = ({navigation}) => {
   const [messages, setMessages] = useState([
@@ -51,6 +59,36 @@ const RoomScreen = ({navigation}) => {
     );
   };
 
+  const renderSend = (props) => {
+    return (
+      <Send {...props}>
+        <View style={styles.sendingContainer}>
+          <Ionicons name="ios-send-outline" size={24} color="#6646ee" />
+        </View>
+      </Send>
+    );
+  };
+
+  const scrollToBottomComponent = () => {
+    return (
+      <View style={styles.bottomComponentContainer}>
+        <MaterialCommunityIcons
+          name="chevron-double-down"
+          size={24}
+          color="#6646ee"
+        />
+      </View>
+    );
+  };
+
+  const renderLoading = () => {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#6646ee" />
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -59,9 +97,16 @@ const RoomScreen = ({navigation}) => {
       <View style={styles.container}>
         <GiftedChat
           onSend={(newMessage) => handleSend(newMessage)}
-          user={{_id: 1}}
+          user={{_id: 1, name: 'John'}}
           messages={messages}
           renderBubble={renderBubble}
+          placeholder="Type your message here..."
+          showUserAvatar
+          alwaysShowSend
+          scrollToBottom
+          renderSend={renderSend}
+          scrollToBottomComponent={scrollToBottomComponent}
+          renderLoading={renderLoading}
         />
       </View>
     </View>
@@ -75,5 +120,10 @@ const styles = StyleSheet.create({
 
     // alignItems: 'center',
     // justifyContent: 'center',
+  },
+  sendingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
   },
 });
