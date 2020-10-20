@@ -63,7 +63,7 @@ const CustomDrawerContent = (props) => {
     return () => unsubscribe();
   }, []);
 
-  console.warn(channels);
+  // console.warn(channels);
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
       {/* <DrawerItem label="Help" onPress={() => alert('Link to help')} /> */}

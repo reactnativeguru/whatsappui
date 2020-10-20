@@ -8,7 +8,7 @@ import ChatInputBox from '../../components/ChatInputBox';
 
 const ChatRoomScreen = (props) => {
   const route = useRoute();
-  console.log(route.params);
+  //.log(route.params);
   return (
     <ImageBackground style={{width: '100%', height: '100%'}} source={BG}>
       <View style={styles.container}>

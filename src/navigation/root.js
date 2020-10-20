@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
+import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import colors from '../theme/colors';
 import {createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import auth from '@react-native-firebase/auth';
+const THEME_COLOR = '#075E54';
+
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -23,6 +26,10 @@ import AddChannel from '../screens/ChannelScreen/add';
 import ChannelChatScreen from '../screens/ChannelScreen/chat';
 import LoginScreen from '../screens/AuthScreens/Login';
 import SignUpScreen from '../screens/AuthScreens/SignUp';
+
+import {AuthFirebaseContext} from '../context/AuthFirebaseContext';
+import Loading from '../components/Loading';
+import RoomScreen from '../screens/ChannelScreen/roomScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -107,7 +114,27 @@ const RootDrawer = () => (
 );
 
 const RootNavigationContainer = () => {
-  const [user, setUser] = useState('Jayant');
+  // const [user, setUser] = useState('Jayant');
+  const {user, setUser} = useContext(AuthFirebaseContext);
+  const [loading, setLoading] = useState(true);
+  const [initializing, setInitializing] = useState(true);
+
+  const onAuthStateChanged = (user) => {
+    setUser(user);
+    if (initializing) setInitializing(false);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  // {user ? <HomeStack /> : <AuthStack />}
 
   if (!user) {
     return (
@@ -119,16 +146,35 @@ const RootNavigationContainer = () => {
   }
 
   return (
-    <Stack.Navigator
-      mode="modal"
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="RootNavigationContainer" component={RootDrawer} />
-      <Stack.Screen name="Channel" component={ChannelScreen} />
-      <Stack.Screen name="AddChannel" component={AddChannel} />
-      <Stack.Screen name="ChannelChat" component={ChannelChatScreen} />
-    </Stack.Navigator>
+    <SafeAreaView style={styles.topSafeArea}>
+      <Stack.Navigator
+        mode="modal"
+        screenOptions={
+          {
+            //     headerShown: false,
+          }
+        }>
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="RootNavigationContainer"
+          component={RootDrawer}
+        />
+        <Stack.Screen name="Channel" component={ChannelScreen} />
+        <Stack.Screen name="AddChannel" component={AddChannel} />
+        <Stack.Screen
+          options={({navigation, route}) => ({
+            title: route.params.name,
+            headerRight: () => (
+              <View>
+                <Text>Close</Text>
+              </View>
+            ),
+          })}
+          name="ChannelChat"
+          component={RoomScreen}
+        />
+      </Stack.Navigator>
+    </SafeAreaView>
   );
 };
 
@@ -137,6 +183,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: 50,
+  },
+  topSafeArea: {
+    backgroundColor: THEME_COLOR,
+    flex: 1,
+  },
+  bottomSafeArea: {
+    flex: 1,
+    backgroundColor: THEME_COLOR,
   },
 });
 

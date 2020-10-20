@@ -5,12 +5,15 @@ import {NavigationContainer} from '@react-navigation/native';
 import MainTabs from './src/navigation/mainTabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import RootStack from './src/navigation/root';
+import {AuthFirebaseProvider} from './src/context/AuthFirebaseContext';
 
 const App = (props) => (
   <SafeAreaProvider>
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
+    <AuthFirebaseProvider>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </AuthFirebaseProvider>
   </SafeAreaProvider>
 );
 export default App;
