@@ -7,6 +7,7 @@ import ChatScreen from '../screens/ChatScreen';
 import SafeAreaView from 'react-native-safe-area-view';
 import HomeScreen from '../screens/HomeScreen';
 import colors from '../theme/colors';
+import ForumScreen from '../screens/ForumScreen';
 const Tab = createMaterialTopTabNavigator();
 
 const MainTabs = () => (
@@ -42,7 +43,7 @@ const MainTabs = () => (
         component={HomeScreen}
       />
       <Tab.Screen name="Chats" component={ChatScreen} />
-      <Tab.Screen name="Status" component={ChatScreen} />
+      <Tab.Screen name="Forum" component={ForumScreen} />
 
       <Tab.Screen name="Calls" component={HomeScreen} />
     </Tab.Navigator>

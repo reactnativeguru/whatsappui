@@ -80,13 +80,14 @@ const CustomDrawerContent = (props) => {
             </TouchableOpacity>
             {channels.map((channel) => (
               <TouchableOpacity
+                key={channel.id}
                 onPress={() =>
                   navigation.navigate('ChannelChat', {
                     channel: channel.id,
                     name: channel.name,
                   })
                 }>
-                <Text key={channel.id}># {channel.name}</Text>
+                <Text># {channel.name}</Text>
               </TouchableOpacity>
             ))}
           </View>

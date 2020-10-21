@@ -10,12 +10,18 @@ import firestore from '@react-native-firebase/firestore';
 
 const AddChannelScreen = ({navigation}) => {
   const [channelName, setChannelName] = useState(null);
+
   const addChannelScreen = () => {
     if (channelName) {
       firestore()
         .collection('rooms')
         .add({name: channelName})
-        .then(() => {
+        .then((docRef) => {
+          docRef.collection('MESSAGES').add({
+            text: `You have joined room: ${channelName}`,
+            createdAt: new Date().getTime(),
+            system: true,
+          });
           console.warn('added:: ', channelName);
           navigation.goBack();
         })
