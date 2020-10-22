@@ -19,7 +19,7 @@ import {AuthFirebaseContext} from '../../context/AuthFirebaseContext';
 import firestore from '@react-native-firebase/firestore';
 import {useRoute} from '@react-navigation/native';
 
-const ForumScreen = (props) => {
+const ForumScreen = ({navigation}) => {
   const route = useRoute();
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,11 +54,26 @@ const ForumScreen = (props) => {
     return () => unsubscribe();
   }, []);
   const currentUser = user.toJSON();
-  console.log(channels);
+  console.warn(channels);
+
+  const ForumItem = ({item}) => (
+    <View key={item._id}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ChannelChat', {
+            name: item.name,
+            channel: item._id,
+          })
+        }>
+        <Text style={styles.roomName}>{item.name}</Text>
+        <Text>{item.latestMessage.text}</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Text>ForumScreen</Text>
+      <FlatList data={channels} renderItem={ForumItem} />
     </View>
   );
 };
@@ -69,5 +84,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  roomName: {
+    fontSize: 20,
   },
 });

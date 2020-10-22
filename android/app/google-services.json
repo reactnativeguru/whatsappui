@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "41206359530",
+    "firebase_url": "https://whats-slack.firebaseio.com",
+    "project_id": "whats-slack",
+    "storage_bucket": "whats-slack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41206359530:android:6267c3ab2f52c6fae7fe93",
+        "android_client_info": {
+          "package_name": "com.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "41206359530-lqlnp2s5h6hq1jir2m1lldb3q4em34hs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9BnJncMczUoxebpoQp7hdvR_PcurCWD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "41206359530-lqlnp2s5h6hq1jir2m1lldb3q4em34hs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "41206359530-2ti9uhfl38v0690df64p2g7dpr2mepcn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.deftness.whatslack"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
