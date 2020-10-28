@@ -8,6 +8,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import HomeScreen from '../screens/HomeScreen';
 import colors from '../theme/colors';
 import ForumScreen from '../screens/ForumScreen';
+import VideoScreen from '../screens/VideoScreen';
 const Tab = createMaterialTopTabNavigator();
 
 const MainTabs = () => (
@@ -45,7 +46,7 @@ const MainTabs = () => (
       <Tab.Screen name="Chats" component={ChatScreen} />
       <Tab.Screen name="Forum" component={ForumScreen} />
 
-      <Tab.Screen name="Calls" component={HomeScreen} />
+      <Tab.Screen name="Video" component={VideoScreen} />
     </Tab.Navigator>
   </SafeAreaView>
 );
